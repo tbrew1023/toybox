@@ -92,7 +92,7 @@ html {
 }
 
 .swoop {
-  transform: translate(-22px, -22px) scale(0.2) !important;
+  transform: translate(-30px, -30px) scale(0.2) !important;
   //background: green !important;
   transition: 1s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -126,7 +126,7 @@ html {
 #fp-nav {
   top: auto;
   bottom: -24px !important;
-  margin-left: 45px;
+  margin-left: 36px;
   filter: invert(1);
 
   li {

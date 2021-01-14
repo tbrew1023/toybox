@@ -3,7 +3,7 @@
   <!-- single value -->
   <div class="circle-progress cp" :style="{width:size+'px',height:size+'px'}" :data-pct="animatedProgress + '%'">
 
-    <h4>Circle Title</h4>
+    <h4>{{ title }}</h4>
 
     <svg class="pie" :width="size" :height="size" :viewPort="'0 0 '+ size + ' ' + size" version="1.1" xmlns="http://www.w3.org/2000/svg">
       
@@ -48,6 +48,10 @@ export default {
     };
   },
   props: {
+    title: {
+      type: String,
+      default: ""
+    },
     score: {
       type: Boolean,
       default: false

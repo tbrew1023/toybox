@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted() {
-    //this.initDroppable();
+    console.log('DataList.vue mounted');
   },
   computed: {
     filteredItems() {
@@ -40,12 +40,6 @@ export default {
     }
   },
   methods: {
-    initDroppable() {
-      this.data.forEach(() => {
-        this.droppable.push(false);
-      });
-      console.log(this.droppable);
-    },
     handleAdd() {
       this.$emit('addToList');
     },
@@ -53,12 +47,6 @@ export default {
       this.$emit('exportList');
     },
     dropdown(event) {
-      /*console.log('dropping down panel ' + context);
-      for(let i = 0; i < this.droppable.length; i++) {
-        this.droppable[i] = ( i != context ? false : ( this.droppable[i] == true ? false : true ));
-      }
-      this.activeDrop = context;
-      console.log(this.droppable);*/
       console.clear();
       var currentDroppable = event.currentTarget.querySelector('.droppable');
       !this.lastDropped || currentDroppable.classList.contains('dropped') ? console.log('hang time') : this.lastDropped.classList.remove('dropped');
@@ -68,8 +56,8 @@ export default {
       this.$forceUpdate();
     },
     collapseLast() {
-      this.droppable[this.activeDrop] = false;
-    },
+      !this.lastDropped ? console.log('nothing to collapse') : this.lastDropped.classList.remove('dropped');
+    }
   }
 }
 </script>

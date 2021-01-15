@@ -62,6 +62,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans&display=swap');
+
 html {
   transition: filter 1s;
 }
@@ -110,7 +112,7 @@ html {
   }
 
   .fp-tooltip {
-    font-size: 12px !important;
+    font-size: 16px !important;
     padding-left: 18px;
     line-height: 22px;
   }
@@ -189,7 +191,7 @@ p {
 }
 
 #app {
-  font-family: 'Gotham', Helvetica, Arial, sans-serif;
+  font-family: 'Work Sans', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

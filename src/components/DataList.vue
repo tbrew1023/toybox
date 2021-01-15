@@ -370,7 +370,7 @@ a {
       border-radius: 8px;
       display:inline-block;
       margin-bottom: 6px;
-      font-weight: bold;
+      //font-weight: bold;
 
       span {
         padding: 0px;
@@ -435,7 +435,7 @@ a {
         //color: red;
         font-size: 14px;
         //text-transform: uppercase;
-        font-weight: bold;
+        //font-weight: bold;
         width: 100%;
         display: flex;
         justify-content: space-between;

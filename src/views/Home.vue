@@ -194,19 +194,19 @@ export default {
 
       <section class="section">
         <div class="page-container">
-          <p>sample content 3</p>
+          top navbar
         </div>
       </section>
 
       <section class="section">
           <div class="page-container">
-            slide example 1
+            banner
           </div>        
       </section>
 
-      <section style="background: pink" class="section">
+      <section class="section">
         <div class="page-container">
-          contact information
+          modal
         </div>
       </section>
 

@@ -203,58 +203,17 @@ circle {
   transform: rotate(0deg) !important;
 }
 
-.score-circle {
-  //animation: score-boi 2s ease forwards 1s;
-  transition: 300ms;
-}
-
-.scp {
-  opacity: 0;
-  animation: score-boi 2s ease forwards 1s;
-}
-
 #p {
-opacity: 0;
+  opacity: 0;
   animation: score-boi 2s ease forwards 1s;
 }
 
 @keyframes score-boi {
   0% {
     stroke-dashoffset: 918;
-    opacity: 0;
   }
   100% {
     opacity: 1;
-  }
-}
-
-@keyframes score-boi-pass {
-  0% {
-    stroke-dashoffset: 918;
-    opacity: 0;
-    //stroke: black;
-  }
-  100% {
-    opacity: 1;
-    //stroke: $colorGreen;
-  }
-}
-
-@keyframes score-boi-fail {
-  0% {
-    stroke-dashoffset: 918;
-    opacity: 0;
-    //stroke: black;
-  }
-  100% {
-    opacity: 1;
-    //stroke: $colorRed;
-  }
-}
-
-@keyframes colorize {
-  0% {
-    //stroke: black;
   }
 }
 

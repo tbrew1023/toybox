@@ -1,12 +1,7 @@
 <template>
   <div id="app">
     <div :class="(unveil ? 'swoop' : '' )" class="logo-loader"></div>
-    <div :class="(unveil ? 'loading-veil unveil' : 'loading-veil')">
-    </div>
-    <div class="cc" :class="[ 'g-cursor', { 'g-cursor_hover': hover }, {'g-cursor_hide': hideCursor} ]">
-      <div :style="cursorCircle" class="g-cursor__circle"></div>
-      <div class="g-cursor__point" ref="point" :style="cursorPoint"></div>
-    </div>
+    <div :class="(unveil ? 'loading-veil unveil' : 'loading-veil')"></div>
     <router-view :dataRef='dataRef' />
   </div>
 </template>
@@ -31,12 +26,12 @@ export default {
     }
   },
   computed: {
-    cursorCircle() {
+    /*cursorCircle() {
       return `transform: translateX(${this.xParent}px) translateY(${this.yParent}px) translateZ(0) translate3d(0, 0, 0);`
     },
     cursorPoint() {
       return `transform: translateX(${this.xChild - 3}px) translateY(${this.yChild - 3}px) translateZ(0) translate3d(0, 0, 0);`
-    }
+    }*/
   },
   mounted() {
     /*setTimeout(() => {
@@ -44,15 +39,6 @@ export default {
       //this.waveOffset = 700;
       console.log('unveiled');
     }, 3000);*/
-    document.addEventListener("mousemove", this.moveCursor);
-    document.addEventListener('mouseleave', (e) => {
-      this.hideCursor = true;
-      console.log('left: ', e.target);
-    });
-    document.addEventListener('mouseenter', (e) => {
-      this.hideCursor = false;
-      console.log('entered: ', e.target);
-    });
   },
   methods: {
     handleNav(index) {
@@ -61,26 +47,15 @@ export default {
       console.log('ROUTE HOME');
       this.$refs.fullpage.api.moveTo(1);
     },
-    moveCursor(e) {
-      var self = this;
+    moveCursor() {
+      //var self = this;
 
-      //console.log(e.target.classList);
-
-      if(e.target.classList.contains('hoverable') || e.target.classList.contains('fp-tooltip') || e.target.tagName == "SPAN") {
-        console.log(e.target.tagName);
-        //console.log('HOVERABLE:)');
-        self.hover = true;
-      } else {
-        //console.log('NOT HOVERABLE!');
-        self.hover = false;
-      }
-
-      this.xChild = e.clientX;
-      this.yChild = e.clientY;
-      setTimeout(() => {
+      //this.xChild = e.clientX;
+      //this.yChild = e.clientY;
+      /*setTimeout(() => {
         this.xParent = e.clientX - 20;
         this.yParent = e.clientY - 20;
-      }, 100);
+      }, 100);*/
     }
   }
 }
@@ -92,9 +67,10 @@ html {
 }
 
 .swoop {
-  transform: translate(-30px, -30px) scale(0.2) !important;
+  transform: translate(-30px, -30px) scale(0.25) !important;
   //background: green !important;
   transition: 1s cubic-bezier(0.65, 0, 0.35, 1);
+  //opacity: 0.4;
 }
 
 .logo-loader {

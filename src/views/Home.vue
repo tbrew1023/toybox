@@ -1,19 +1,78 @@
 <script>// @ts-nocheck
-
-//import firebase from 'firebase';
 import CircleProgress from '@/components/CircleProgress.vue'
+import DataList from '@/components/DataList.vue'
 
 export default {
   name: 'Home',
   components: {
-    CircleProgress
+    CircleProgress,
+    DataList
   },
   data() {
     return {
+      testData: [
+        {
+          name: 'Trent Brew',
+          email: 'tbrew1023@gmail.com',
+          company: 'LT Design Lab',
+          skill: 'Web Development',
+          age: 23
+        },
+        {
+          name: 'Lawan Alade-Fa',
+          email: 'slafa@ltdesign.io',
+          company: 'Studio LAFA',
+          skill: 'Design',
+          age: 23
+        },
+        {
+          name: 'Eric Li',
+          email: 'ezli@protonmail.com',
+          company: 'Coinflip',
+          skill: 'Graphic Design',
+          age: 23
+        },
+        {
+          name: 'Tim Chatman',
+          email: 'tchatman@ltdesign.io',
+          company: 'LT Design Lab',
+          skill: 'Data Science',
+          age: 24
+        },
+                {
+          name: 'Lauren Brew',
+          email: 'lbrew@gmail.com',
+          company: 'froSkate',
+          skill: 'Copyediting',
+          age: 22
+        },
+        {
+          name: 'Candice Brew',
+          email: 'candicebrew@gmail.com',
+          company: 'FACTORY PR',
+          skill: 'PR',
+          age: 26
+        },
+        {
+          name: 'Virginia Brew',
+          email: 'vbrew@gmail.com',
+          company: 'LoanDepot',
+          skill: 'Mortgage',
+          age: 47
+        },
+        {
+          name: 'Derrick Brew',
+          email: 'dbrew@gmail.com',
+          company: 'LoanDepot',
+          skill: 'Mortgage',
+          age: 47
+        }
+      ],
       name: null,
       waveOffset: "120vw",
       waveLeft: true,
       options: {
+        normalScrollElements: '.datalist-container',
         scrollingSpeed: 600,
         navigation: true,
         fadingEffect: true,
@@ -52,6 +111,14 @@ export default {
     this.hideNav = false; //hide nav on landing page?
   },
   methods: {
+    /*async fetchData() {
+      await firebase.firestore().collection('menu').orderBy('name').get().then((docs) => {
+        docs.forEach((doc) => {
+          this.items.push(doc.data());
+          this.droppable.push(false);
+        });
+      });
+    },*/
     handleLeave(origin, destination, direction) {
       console.log('origin: ', origin);
       console.log('destination: ', destination);
@@ -87,46 +154,41 @@ export default {
       <!--canvas id="glscreen"></canvas-->
     </div>
 
-    <div class="bottom-actions"><div class="nav-button">☽</div></div>
+    <div class="bottom-actions"><div class="nav-button"></div></div>
 
     <!-- main (fullpage.js; TODO: Configuure locomotive scroll) -->
     <full-page ref="fullpage" :options="options" id="fullpage">
       
-      <!-- Section 2 -->
       <section class="section">
         <div class="page-container">
             <CircleProgress
-            :title="'New Title'"
-            :percentage="84" 
-            :progressColor="'#3D65B8'"
-            :ringColor="'rgba(0,0,0,0.05)'" 
-            :strokeWidth="12"
-          />  
+              :title="'New Title'"
+              :percentage="84" 
+              :progressColor="'#4671B1'"
+              :ringColor="'rgba(0,0,0,0.05)'" 
+              :strokeWidth="8"
+            />  
         </div>
       </section>
 
-      <!-- Section 3 -->
       <section class="section">
         <div class="page-container">
-          <p>sample content 2</p>
+          <DataList :test="true" :expandable="true" :data="testData" :columns="['name','email','company','skill','age']" />
         </div>
       </section>
 
-      <!-- Section 4 -->
       <section class="section">
         <div class="page-container">
           <p>sample content 3</p>
         </div>
       </section>
 
-      <!-- Section 5 w slides -->
       <section class="section">
           <div class="page-container">
             slide example 1
           </div>        
       </section>
 
-      <!-- Section 6 -->
       <section style="background: pink" class="section">
         <div class="page-container">
           contact information
@@ -160,6 +222,14 @@ export default {
   color: black !important;
 }
 
+.litemode {
+  background-image: url("https://raw.githubusercontent.com/tbrew1023/icommon/c5bf1076cb9bf0a5f060b81624b53f01b4953a71/lightmode.svg");
+}
+
+.nitemode {
+  background-image: url("https://github.com/tbrew1023/icommon/blob/master/darkmode.svg");
+}
+
 .bottom-actions {
   position: absolute;
   top: 0px;
@@ -173,10 +243,13 @@ export default {
   width: 100vw;
 
   .nav-button {
-    background: black;
-    height: 40px;
-    width: max-content;
-    padding: 6px 20px;
+    background-image: url("https://raw.githubusercontent.com/tbrew1023/icommon/c5bf1076cb9bf0a5f060b81624b53f01b4953a71/darkmode.svg");
+    background-size: 90%;
+    background-position: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    height: 48px;
+    width: 48px;
     margin-right: 56px;
     line-height: 40px;
     border-radius: 60px;

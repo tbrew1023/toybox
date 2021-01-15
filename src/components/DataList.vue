@@ -95,10 +95,8 @@ export default {
               <div class="inner-columns-container">
                 <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col"><span>{{ filteredItems[index1][colKey] }}</span></div>
               </div>
-              <div>
-                <div class="droppable">
-                  hi. {{ filteredItems[index1].description }}
-                </div>
+              <div class="droppable">
+                hi. {{ filteredItems[index1].description }}
               </div>
             </li>
           </ul>
@@ -211,6 +209,7 @@ export default {
   border-radius: 8px 8px 0px 0px;
   display: flex;
   align-items: center;
+  box-shadow: 0px 36px 36px -24px black;
 }
 
 .no-results {
@@ -391,14 +390,8 @@ a {
       height: 100px !important;
       pointer-events: none;
       transition: 300ms;
-      //background: green;
-      //padding-top: 24px;
-
-      .bubble-items {
-        transition-delay: 100ms;
-        //background: pink;
-        opacity: 1;
-      }
+      border-top: 1px solid black;
+      opacity: 1 !important;
     }
     
     li {

@@ -74,6 +74,14 @@ export default {
           skill: 'Mortgage',
           age: 47,
           description: 'Me papa<3'
+        },
+        {
+          name: 'Manman',
+          email: 'manman@gmail.com',
+          company: 'dbjrFoundation',
+          skill: 'People',
+          age: 24,
+          description: 'Love you manman'
         }
       ],
       name: null,

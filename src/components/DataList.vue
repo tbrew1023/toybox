@@ -77,6 +77,7 @@ export default {
     </div>
 
     <div class="list-top" :style="(!filteredItems.length == 0  ? 'opacity: 1' : 'opacity: 0' )">
+      <div class="col pre-col"><span>#</span></div>
       <div v-for="(column, index) in columnTitles" :key="index" class="col"><span>{{ column }}</span></div>
     </div>
 
@@ -93,10 +94,15 @@ export default {
             :id="'item'+index1" @click="dropdown" 
             :class="(index1 != 0 ? '' : 'first-service')">
               <div class="inner-columns-container">
-                <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col"><span>{{ filteredItems[index1][colKey] }}</span></div>
+                <div class="pre-key-col"><span>{{ index1 }}</span></div>
+                <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col">
+                  <span>{{ filteredItems[index1][colKey] }}</span>
+                </div>
               </div>
               <div class="droppable">
-                hi. {{ filteredItems[index1].description }}
+                
+                <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
+              
               </div>
             </li>
           </ul>
@@ -183,6 +189,22 @@ export default {
     font-size: 12px;
     opacity: 1;
   }
+}
+
+.pre-col, .pre-key-col {
+  //border: 1px black solid;
+  width: 20% !important;
+  height: inherit;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+
+  span {
+    margin-left: 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }  
 }
 
 .col {
@@ -341,57 +363,36 @@ a {
     background-position: center;
   }
 
-  .bubble-items {
-    text-align: center;
-    width: 100%;
-    margin-left: 0px;
-    //padding-top: 36px;
-    transition: 300ms;
-    color: #bbb;
-
-    span {
-      margin-right: 4px;
-      color: black;
-      background: #eee;
-      padding: 4px 8px;
-      line-height: 1;
-      font-size: 12px;
-      border-radius: 8px;
-      display:inline-block;
-      margin-bottom: 6px;
-      //font-weight: bold;
-
-      span {
-        padding: 0px;
-        margin: 0px;
-        color: transparent;
-      }
-    }
-  }
-
   ul {
     margin: 0px;
     padding: 0px;
     list-style: none;
 
     .droppable {
+      background: gray;
       width: 100%;
       height: 2px !important;
-      background: black;
       color: black !important;
       //margin-top: 24px;
       transition: 300ms;
       pointer-events: none;
+      text-align: left;
+      padding-top: 0px;
       opacity: 0;
     }
 
     .dropped {
-      background: pink;
+      background: #e9e9e9 !important;
       height: 100px !important;
       pointer-events: none;
       transition: 300ms;
-      border-top: 1px solid black;
+      //border-top: 1px solid gray;
       opacity: 1 !important;
+      padding-top: 12px;
+      
+      span {
+        margin-left: 24px;
+      }
     }
     
     li {

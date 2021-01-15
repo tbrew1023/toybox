@@ -16,56 +16,64 @@ export default {
           email: 'tbrew1023@gmail.com',
           company: 'LT Design Lab',
           skill: 'Web Development',
-          age: 23
+          age: 23,
+          description: 'Web Developer living in Chicago'
         },
         {
           name: 'Lawan Alade-Fa',
           email: 'slafa@ltdesign.io',
           company: 'Studio LAFA',
           skill: 'Design',
-          age: 23
+          age: 23,
+          description: 'Architect attending Northwestern'
         },
         {
           name: 'Eric Li',
           email: 'ezli@protonmail.com',
           company: 'Coinflip',
           skill: 'Graphic Design',
-          age: 23
+          age: 23,
+          description: 'Graphic Designer living in Chicago'
         },
         {
           name: 'Tim Chatman',
           email: 'tchatman@ltdesign.io',
           company: 'LT Design Lab',
           skill: 'Data Science',
-          age: 24
+          age: 24,
+          description: 'Data scientist attending DePaul'
         },
                 {
           name: 'Lauren Brew',
           email: 'lbrew@gmail.com',
           company: 'froSkate',
           skill: 'Copyediting',
-          age: 22
+          age: 22,
+          description: 'Skater, writer, activist'
         },
         {
           name: 'Candice Brew',
           email: 'candicebrew@gmail.com',
           company: 'FACTORY PR',
           skill: 'PR',
-          age: 26
+          age: 26,
+          description: 'Branding genius living in New York'
         },
         {
           name: 'Virginia Brew',
           email: 'vbrew@gmail.com',
           company: 'LoanDepot',
           skill: 'Mortgage',
-          age: 47
+          age: 47,
+          description: 'Me mama<3'
         },
         {
           name: 'Derrick Brew',
           email: 'dbrew@gmail.com',
           company: 'LoanDepot',
           skill: 'Mortgage',
-          age: 47
+          age: 47,
+          description: 'Me papa<3'
         }
       ],
       name: null,

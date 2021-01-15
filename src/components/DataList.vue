@@ -25,11 +25,12 @@ export default {
       droppable: [],
       items: [],
       search: '',
-      activeDrop: null
+      activeDrop: null,
+      lastDropped: null
     }
   },
   mounted() {
-    
+    //this.initDroppable();
   },
   computed: {
     filteredItems() {
@@ -39,19 +40,32 @@ export default {
     }
   },
   methods: {
+    initDroppable() {
+      this.data.forEach(() => {
+        this.droppable.push(false);
+      });
+      console.log(this.droppable);
+    },
     handleAdd() {
       this.$emit('addToList');
     },
     handleExport() {
       this.$emit('exportList');
     },
-    dropdown(context) {
-      console.log('dropping down panel ' + context);
+    dropdown(event) {
+      /*console.log('dropping down panel ' + context);
       for(let i = 0; i < this.droppable.length; i++) {
         this.droppable[i] = ( i != context ? false : ( this.droppable[i] == true ? false : true ));
       }
       this.activeDrop = context;
-      console.log(this.droppable);
+      console.log(this.droppable);*/
+      console.clear();
+      var currentDroppable = event.currentTarget.querySelector('.droppable');
+      !this.lastDropped || currentDroppable.classList.contains('dropped') ? console.log('hang time') : this.lastDropped.classList.remove('dropped');
+      console.log(currentDroppable);
+      currentDroppable.classList.contains('dropped') ? currentDroppable.classList.remove('dropped') : currentDroppable.classList.add('dropped');
+      this.lastDropped = currentDroppable;
+      this.$forceUpdate();
     },
     collapseLast() {
       this.droppable[this.activeDrop] = false;
@@ -88,19 +102,14 @@ export default {
             :style="'background:'+( index1 % 2 == 0 ? '#f6f6f6' : '#ffffff' )"
             v-for="(i, index1) in filteredItems" 
             v-bind:key="index1" 
-            :id="'item'+index1" @click="dropdown(index1)" 
+            :id="'item'+index1" @click="dropdown" 
             :class="(index1 != 0 ? '' : 'first-service')">
               <div class="inner-columns-container">
                 <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col"><span>{{ filteredItems[index1][colKey] }}</span></div>
               </div>
-              <div 
-              :class="( 
-                droppable[index1] == true ? 
-                'droppable dropped' : 
-                'droppable collapsed' 
-                )">
-                <div class="bubble-items">
-                  test info
+              <div>
+                <div class="droppable">
+                  hi. {{ filteredItems[index1].description }}
                 </div>
               </div>
             </li>
@@ -332,13 +341,6 @@ a {
 }
 
 .services-container {
-  background: white;
-  height: max-content;
-  margin-top: 0px;
-  margin-bottom: 0px !important;
-  display: flex;
-  border-radius: 0px 0px 8px 8px;
-  padding: 0px;
 
   .service-icon {
     //background: black;
@@ -387,18 +389,20 @@ a {
 
     .droppable {
       width: 100%;
-      height: 0px;
-      //background: black;
+      height: 2px !important;
+      background: black;
       color: black !important;
       //margin-top: 24px;
       transition: 300ms;
       pointer-events: none;
+      opacity: 0;
     }
 
     .dropped {
-      //background: pink;
-      height: 200px;
+      background: pink;
+      height: 100px !important;
       pointer-events: none;
+      transition: 300ms;
       //background: green;
       //padding-top: 24px;
 
@@ -406,20 +410,6 @@ a {
         transition-delay: 100ms;
         //background: pink;
         opacity: 1;
-      }
-    }
-
-    .collapsed {
-      //background: gray;
-      height: 0px;
-      //opacity: 0%;
-      pointer-events: none;
-      //padding-top: 1px;
-      
-      .bubble-items {
-        //background: red;
-        opacity: 0;
-        transition: 100ms;
       }
     }
     
@@ -478,15 +468,6 @@ a {
     width: 85%;
   }
 
-  .services-container-left {
-    //background: red;
-    width: 800px;
-  }
-
-  .services-container-right {
-    //background: orange;
-    width: 100%;
-  }
 }
 
 .right {
@@ -506,8 +487,7 @@ a {
 }
 
 /* Track */
-::-webkit-scrollbar-track {
-  //box-shadow: inset 0 0 5px grey; 
+::-webkit-scrollbar-track { 
   border-radius: 10px;
   background: #f6f6f6;
 }

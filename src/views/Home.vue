@@ -111,6 +111,12 @@ export default {
     this.hideNav = false; //hide nav on landing page?
   },
   methods: {
+    handleAdd() {
+      alert('handling data add from parent...');
+    },
+    handleExport() {
+      alert('handling data export from parent...');
+    },
     /*async fetchData() {
       await firebase.firestore().collection('menu').orderBy('name').get().then((docs) => {
         docs.forEach((doc) => {
@@ -173,7 +179,16 @@ export default {
 
       <section class="section">
         <div class="page-container">
-          <DataList :test="true" :expandable="true" :data="testData" :columns="['name','email','company','skill','age']" />
+          <DataList 
+          :title="'Students'" 
+          :test="true" 
+          :expandable="true" 
+          :data="testData" 
+          :columnTitles="['NAME','EMAIL','COMPANY','SKILL','AGE']"
+          :columnKeys="['name','email','company','skill', 'age']"
+          @addToList="handleAdd()"
+          @exportList="handleExport()"
+           />
         </div>
       </section>
 

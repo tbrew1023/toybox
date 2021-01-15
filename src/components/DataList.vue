@@ -1,69 +1,24 @@
-<template>
-  <div class="datalist-container">
-    <div class="list-head-container">
-      <div class="head-left"><h1>Students</h1><div class="add-button"><div class="add-icon"></div>Add</div></div>
-      <div class="head-right">
-        <div class="search-container">
-          <input @click="collapseLast" v-model="search"  placeholder="Search by name" type="text" name="search" id="search"/>
-          <div class="search-icon"></div>
-        </div>
-        <div class="filter-button"><div class="order-icon"></div>Search Options</div>
-        <div class="export-button"><div class="export-icon"></div>Export</div>
-      </div>
-    </div>
-
-    <div class="list-top" :style="(!filteredItems.length == 0  ? 'opacity: 1' : 'opacity: 0' )">
-
-    </div>
-
-    <div class="list-contents-container">
-      <div v-if="filteredItems.length == 0" class="no-results"><h4>No Results</h4></div>
-      <div class="services-container">
-        <div class="services-container-right">
-          <ul>
-            <li 
-            class="list-item"
-            :style="'background:'+( index % 2 == 0 ? '#f6f6f6' : '#ffffff' )"
-            v-for="(i, index) in filteredItems" 
-            v-bind:key="index" 
-            :id="'item'+index" @click="dropdown(index)" 
-            :class="(index != 0 ? '' : 'first-service')">
-              <span><strong style='opacity: 0.4; color: green'>{{ i.age }}</strong>{{ i.name }}<b :class="( droppable[index] == true ? 'right' : 'up' )"></b></span>
-              <div 
-              :class="( 
-                droppable[index] == true ? 
-                'droppable dropped' : 
-                'droppable collapsed' 
-                )">
-                <div class="bubble-items">
-                      <strong>{{ i.type }}</strong>
-                      <p>{{ i.description }}</p>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 //import firebase from 'firebase';
 
 export default {
   name: 'DataList',
   props: {
+    title: {
+      type: String,
+      default: 'List Title'
+    },
     test: {
       type: Boolean,
-      default: false,
+      default: false
     },
     expandable: {
       type: Boolean,
       default: false
     },
     data: Array,
-    columns: Array
+    columnTitles: Array,
+    columnKeys: Array
   },
   data() {
     return {
@@ -84,6 +39,12 @@ export default {
     }
   },
   methods: {
+    handleAdd() {
+      this.$emit('addToList');
+    },
+    handleExport() {
+      this.$emit('exportList');
+    },
     dropdown(context) {
       console.log('dropping down panel ' + context);
       for(let i = 0; i < this.droppable.length; i++) {
@@ -99,7 +60,66 @@ export default {
 }
 </script>
 
+<template>
+  <div class="datalist-container">
+    <div class="list-head-container">
+      <div class="head-left"><h1>{{ title }}</h1><div class="add-button" @click="handleAdd"><div class="add-icon"></div>Add</div></div>
+      <div class="head-right">
+        <div class="search-container">
+          <input @click="collapseLast" v-model="search"  placeholder="Search by name" type="text" name="search" id="search"/>
+          <div class="search-icon"></div>
+        </div>
+        <div class="filter-button"><div class="order-icon"></div>Search Options</div>
+        <div @click="handleExport" class="export-button"><div class="export-icon"></div>Export</div>
+      </div>
+    </div>
+
+    <div class="list-top" :style="(!filteredItems.length == 0  ? 'opacity: 1' : 'opacity: 0' )">
+      <div v-for="(column, index) in columnTitles" :key="index" class="col"><span>{{ column }}</span></div>
+    </div>
+
+    <div class="list-contents-container">
+      <div v-if="filteredItems.length == 0" class="no-results"><h4>No Results</h4></div>
+      <div class="services-container">
+        <div class="services-container-right">
+          <ul>
+            <li 
+            class="list-item"
+            :style="'background:'+( index1 % 2 == 0 ? '#f6f6f6' : '#ffffff' )"
+            v-for="(i, index1) in filteredItems" 
+            v-bind:key="index1" 
+            :id="'item'+index1" @click="dropdown(index1)" 
+            :class="(index1 != 0 ? '' : 'first-service')">
+              <div class="inner-columns-container">
+                <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col"><span>{{ filteredItems[index1][colKey] }}</span></div>
+              </div>
+              <div 
+              :class="( 
+                droppable[index1] == true ? 
+                'droppable dropped' : 
+                'droppable collapsed' 
+                )">
+                <div class="bubble-items">
+                  test info
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <style scoped lang="scss">
+
+.inner-columns-container {
+  display: flex;
+  width: 100%;
+  height: inherit;
+  //background: rgba(0,0,0,0.2);
+  //padding-left: 4px;
+}
 
 .add-icon {
   //background-size: 70%;
@@ -153,12 +173,47 @@ export default {
   border-radius: 0px 0px 8px 8px;
 }
 
+.key-col {
+  //border: 1px black solid;
+  width: 100%;
+  height: inherit;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 24px 0px 24px 0px;
+  color: black;
+
+  span {
+    margin-left: 24px;
+    font-size: 12px;
+    opacity: 1;
+  }
+}
+
+.col {
+  //border: 1px black solid;
+  width: 100%;
+  height: inherit;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+
+  span {
+    margin-left: 24px;
+    font-size: 12px;
+    text-transform: uppercase;
+    opacity: 0.4;
+  }
+}
+
 .list-top {
   background: white;
   width: 100%;
   height: 63px;
   margin-top: 24px;
   border-radius: 8px 8px 0px 0px;
+  display: flex;
+  align-items: center;
 }
 
 .no-results {
@@ -335,7 +390,7 @@ a {
       height: 0px;
       //background: black;
       color: black !important;
-      margin-top: 24px;
+      //margin-top: 24px;
       transition: 300ms;
       pointer-events: none;
     }
@@ -369,7 +424,6 @@ a {
     }
     
     li {
-      padding: 24px 0px 1px 24px;
       //border: 1px solid black;
       cursor: pointer;
       //border-top: 1px #e0e0e0 solid;

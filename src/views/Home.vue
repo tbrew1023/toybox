@@ -1,15 +1,33 @@
 <script>// @ts-nocheck
 import CircleProgress from '@/components/CircleProgress.vue'
 import DataList from '@/components/DataList.vue'
+import Banner from '@/components/Banner.vue'
 
 export default {
   name: 'Home',
   components: {
     CircleProgress,
-    DataList
+    DataList,
+    Banner
   },
   data() {
     return {
+      options: {
+        normalScrollElements: '.datalist-container',
+        scrollingSpeed: 600,
+        navigation: true,
+        fadingEffect: true,
+        navigationPosition: 'left',
+        navigationTooltips: ['CircleProgress.vue','DataList.vue', 'TopNav.vue', 'Banner.vue','Modal.vue'],
+        showActiveTooltip: true,
+        anchors: ['circleprogress','datalist', 'topnav', 'banner','modal'],
+        onLeave: (origin, destination, direction) => {
+          this.handleLeave(origin, destination, direction);
+        },
+        onSlideLeave: (origin, destination, direction) => {
+          this.handleSlideLeave(origin, destination, direction);
+        }
+      },
       testData: [
         {
           name: 'Trent Brew',
@@ -84,37 +102,14 @@ export default {
           description: 'Love you manman'
         }
       ],
-      name: null,
-      waveOffset: "120vw",
-      waveLeft: true,
-      options: {
-        normalScrollElements: '.datalist-container',
-        scrollingSpeed: 600,
-        navigation: true,
-        fadingEffect: true,
-        navigationPosition: 'left',
-        navigationTooltips: ['CircleProgress.vue','DataList.vue', 'TopNav.vue', 'Banner.vue','Modal.vue'],
-        showActiveTooltip: true,
-        anchors: ['circleprogress','datalist', 'topnav', 'banner','modal'],
-        onLeave: (origin, destination, direction) => {
-          this.handleLeave(origin, destination, direction);
-        },
-        onSlideLeave: (origin, destination, direction) => {
-          this.handleSlideLeave(origin, destination, direction);
-        }
-      },
       triggerUp: false,
       triggerDown: false,
       fix: false,
       activeSection: 0,
       activeSlide: 1,
-      hover: false,
-      currentExtra: '',
-      currentPreview: '',
-      currentProjectText: '',
-      currentProjectTitle: '',
       scrollOverflow: false,
       context: 0,
+      datetime: null
     }
   },
   props: {
@@ -124,9 +119,12 @@ export default {
 
   },
   mounted() {
-    this.hideNav = false; //hide nav on landing page?
+    this.setDateTime();
   },
   methods: {
+    setDateTime() {
+      this.datetime = 'Current Date';
+    },
     handleAdd() {
       alert('handling data add from parent...');
     },
@@ -216,7 +214,12 @@ export default {
 
       <section class="section">
           <div class="page-container">
-            banner
+            <Banner 
+            :title="'Welcome!'"
+            :subtitle="'Today is ' + datetime"
+            :backgroundImage="'https://github.com/tbrew1023/icommon/blob/master/images/banner.png?raw=true'"
+            :primaryColor="'#4671B1'"
+            />
           </div>        
       </section>
 

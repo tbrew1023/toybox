@@ -48,15 +48,36 @@ export default {
     },
     dropdown(event) {
       console.clear();
-      var currentDroppable = event.currentTarget.querySelector('.droppable');
+
+      /*
+      
+      --- .droppable is now a sibling of the event target
+      --- currentDroppable should query for the target's only sibling, rather than it's child
+      
+      */
+
+      //console.log(event.currentTarget.nextSibling);
+
+      var currentDroppable = event.currentTarget.nextSibling;
+      //on first drop
       !this.lastDropped || currentDroppable.classList.contains('dropped') ? console.log('hang time') : this.lastDropped.classList.remove('dropped');
-      console.log(currentDroppable);
+      //drop toggle
+      console.log('just checking... ', event);
       currentDroppable.classList.contains('dropped') ? currentDroppable.classList.remove('dropped') : currentDroppable.classList.add('dropped');
+      //queue last dropped
       this.lastDropped = currentDroppable;
       this.$forceUpdate();
     },
     collapseLast() {
       !this.lastDropped ? console.log('nothing to collapse') : this.lastDropped.classList.remove('dropped');
+    },
+    handleDroppableBtnClick() {
+      console.clear();
+      console.log('handling droppable button click');
+    },
+    preventCollapse(e) {
+      console.log('oboy');
+      console.log('preventing collapse for ', e);
     }
   }
 }
@@ -91,18 +112,19 @@ export default {
             :style="'background:'+( index1 % 2 == 0 ? '#f6f6f6' : '#ffffff' )"
             v-for="(i, index1) in filteredItems" 
             v-bind:key="index1" 
-            :id="'item'+index1" @click="dropdown" 
             :class="(index1 != 0 ? '' : 'first-service')">
-              <div class="inner-columns-container">
-                <div class="pre-key-col"><span>{{ index1 }}</span></div>
+              <div :id="'item'+index1" @click="dropdown" class="inner-columns-container">
+                <div class="pre-key-col"><span>{{ index1+1 }}</span></div>
                 <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col">
                   <span>{{ filteredItems[index1][colKey] }}</span>
                 </div>
               </div>
               <div class="droppable">
-                
                 <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
-              
+                <div class="bottom-droppable">
+                  <div @click="handleDroppableBtnClick()" class="droppable-btn">Btn 1</div>
+                  <div @click="handleDroppableBtnClick()" class="droppable-btn">Btn 2</div>
+                </div>
               </div>
             </li>
           </ul>
@@ -118,8 +140,7 @@ export default {
   display: flex;
   width: 100%;
   height: inherit;
-  //background: rgba(0,0,0,0.2);
-  //padding-left: 4px;
+  cursor: pointer;
 }
 
 .add-icon {
@@ -169,7 +190,7 @@ export default {
 }
 
 .list-contents-container {
-  height: 300px;
+  height: 400px;
   overflow: auto;
   border-radius: 0px 0px 8px 8px;
 }
@@ -229,6 +250,7 @@ export default {
   height: 63px;
   margin-top: 24px;
   border-radius: 8px 8px 0px 0px;
+  border-bottom: #eee 1px solid;
   display: flex;
   align-items: center;
   box-shadow: 0px 36px 36px -24px black;
@@ -369,22 +391,59 @@ a {
     list-style: none;
 
     .droppable {
-      background: gray;
+      //background: gray;
       width: 100%;
       height: 2px !important;
       color: black !important;
       //margin-top: 24px;
       transition: 300ms;
-      pointer-events: none;
+      //pointer-events: none;
       text-align: left;
       padding-top: 0px;
       opacity: 0;
+      display: flex;
+      flex-direction: column;
+      z-index: -1;
+
+      strong {
+        margin-top: 6px;
+        margin-left: 24px !important;
+      }
+
+      .bottom-droppable {
+        //display: none !important;
+        //background: red;
+        height: 100%;
+        width: max-content;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 24px;
+
+        .droppable-btn {
+          background: orange;
+          height: 30px;
+          width: 100px;
+          margin-right: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: white;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: 200ms;
+
+          &:hover {
+            transform: scale(0.9);
+          }
+        }
+      }
     }
 
     .dropped {
       background: #e9e9e9 !important;
       height: 100px !important;
-      pointer-events: none;
+      //pointer-events: none;
       transition: 300ms;
       //border-top: 1px solid gray;
       opacity: 1 !important;
@@ -397,7 +456,6 @@ a {
     
     li {
       //border: 1px solid black;
-      cursor: pointer;
       //border-top: 1px #e0e0e0 solid;
       //display: flex;
       //justify-content: center;

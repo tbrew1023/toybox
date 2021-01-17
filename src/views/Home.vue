@@ -264,7 +264,7 @@ export default {
 .bottom-actions {
   position: absolute;
   top: 0px;
-  z-index: 9999;
+  z-index: -1;
   display: flex;
   justify-content: flex-end;
   align-items: center;

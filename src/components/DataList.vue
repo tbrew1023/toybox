@@ -26,7 +26,8 @@ export default {
       items: [],
       search: '',
       activeDrop: null,
-      lastDropped: null
+      lastDropped: null,
+      dropActive: false
     }
   },
   mounted() {
@@ -62,8 +63,15 @@ export default {
       //on first drop
       !this.lastDropped || currentDroppable.classList.contains('dropped') ? console.log('hang time') : this.lastDropped.classList.remove('dropped');
       //drop toggle
-      console.log('just checking... ', event);
       currentDroppable.classList.contains('dropped') ? currentDroppable.classList.remove('dropped') : currentDroppable.classList.add('dropped');
+      if(this.lastDropped == currentDroppable) {
+        this.dropActive = !this.dropActive;
+      } else {
+        this.dropActive = false;
+        setTimeout(() => {
+          this.dropActive = true;
+        }, 100);
+      }
       //queue last dropped
       this.lastDropped = currentDroppable;
       this.$forceUpdate();
@@ -122,8 +130,8 @@ export default {
               <div class="droppable">
                 <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
                 <div class="bottom-droppable">
-                  <div @click="handleDroppableBtnClick()" class="droppable-btn">Btn 1</div>
-                  <div @click="handleDroppableBtnClick()" class="droppable-btn">Btn 2</div>
+                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn1">Btn 1</div>
+                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Btn 2</div>
                 </div>
               </div>
             </li>
@@ -135,6 +143,25 @@ export default {
 </template>
 
 <style scoped lang="scss">
+
+.drop-btn1 {
+  opacity: 0;
+  transform: scale(0.6);
+  animation: flyin 200ms ease forwards 100ms;
+}
+
+.drop-btn2 {
+  opacity: 0;
+  transform: scale(0.6);
+  animation: flyin 200ms ease forwards 200ms;
+}
+
+@keyframes flyin {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
 .inner-columns-container {
   display: flex;
@@ -391,13 +418,10 @@ a {
     list-style: none;
 
     .droppable {
-      //background: gray;
       width: 100%;
       height: 2px !important;
       color: black !important;
-      //margin-top: 24px;
       transition: 300ms;
-      //pointer-events: none;
       text-align: left;
       padding-top: 0px;
       opacity: 0;
@@ -431,10 +455,10 @@ a {
           color: white;
           border-radius: 8px;
           cursor: pointer;
-          transition: 200ms;
+          transition: 200ms !important;
 
           &:hover {
-            transform: scale(0.9);
+            transform: scale(0.95) !important;
           }
         }
       }

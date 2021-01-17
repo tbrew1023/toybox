@@ -130,8 +130,8 @@ export default {
               <div class="droppable">
                 <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
                 <div class="bottom-droppable">
-                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn1">Btn 1</div>
-                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Btn 2</div>
+                  <div v-if="dropActive" class="drop-btn1"><input type="number" placeholder="Add Data" /></div>
+                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Submit</div>
                 </div>
               </div>
             </li>
@@ -148,12 +148,25 @@ export default {
   opacity: 0;
   transform: scale(0.6);
   animation: flyin 200ms ease forwards 100ms;
+  margin-right: 12px;
+
+  input {
+    padding: 8px 0px 8px 12px;
+    border: none;
+    border-radius: 8px;
+    width: 100px;
+
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 .drop-btn2 {
   opacity: 0;
   transform: scale(0.6);
   animation: flyin 200ms ease forwards 200ms;
+  transition: 200ms !important;
 }
 
 @keyframes flyin {
@@ -428,6 +441,7 @@ a {
       display: flex;
       flex-direction: column;
       z-index: -1;
+      pointer-events: none;
 
       strong {
         margin-top: 6px;
@@ -445,7 +459,7 @@ a {
         margin-left: 24px;
 
         .droppable-btn {
-          background: orange;
+          background: #4671B1;
           height: 30px;
           width: 100px;
           margin-right: 12px;
@@ -458,7 +472,8 @@ a {
           transition: 200ms !important;
 
           &:hover {
-            transform: scale(0.95) !important;
+            background: rgba(#4671B1,0.3);
+            color: #4671B1;
           }
         }
       }
@@ -467,11 +482,10 @@ a {
     .dropped {
       background: #e9e9e9 !important;
       height: 100px !important;
-      //pointer-events: none;
       transition: 300ms;
-      //border-top: 1px solid gray;
       opacity: 1 !important;
       padding-top: 12px;
+      pointer-events: all;
       
       span {
         margin-left: 24px;

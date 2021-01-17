@@ -2,13 +2,15 @@
 import CircleProgress from '@/components/CircleProgress.vue'
 import DataList from '@/components/DataList.vue'
 import Banner from '@/components/Banner.vue'
+import Modal from '@/components/Modal.vue'
 
 export default {
   name: 'Home',
   components: {
     CircleProgress,
     DataList,
-    Banner
+    Banner,
+    Modal
   },
   data() {
     return {
@@ -225,7 +227,7 @@ export default {
 
       <section class="section">
         <div class="page-container">
-          modal
+          <Modal />
         </div>
       </section>
 

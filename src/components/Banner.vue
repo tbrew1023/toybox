@@ -11,11 +11,6 @@
 <script>
     export default {
         name: 'Banner',
-        data() {
-            return {
-
-            }
-        },
         props: {
             title: {
                 type: String,
@@ -34,12 +29,6 @@
                 type: String,
                 default: 'black'
             }
-        },
-        moutned() {
-
-        },
-        methods: {
-
         }
     }
 </script>

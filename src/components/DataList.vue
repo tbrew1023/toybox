@@ -293,7 +293,7 @@ export default {
   border-bottom: #eee 1px solid;
   display: flex;
   align-items: center;
-  box-shadow: 0px 36px 36px -24px black;
+  //box-shadow: 0px 36px 36px -24px black;
 }
 
 .no-results {
@@ -432,13 +432,13 @@ a {
 
     .droppable {
       width: 100%;
-      height: 2px !important;
+      height: 0px !important;
       color: black !important;
       transition: 300ms;
       text-align: left;
       padding-top: 0px;
+      margin: 0px;
       opacity: 0;
-      display: flex;
       flex-direction: column;
       z-index: -1;
       pointer-events: none;
@@ -446,6 +446,7 @@ a {
       strong {
         margin-top: 6px;
         margin-left: 24px !important;
+        display: none;
       }
 
       .bottom-droppable {
@@ -486,6 +487,13 @@ a {
       opacity: 1 !important;
       padding-top: 12px;
       pointer-events: all;
+      display: flex;
+
+      strong {
+        margin-top: 6px;
+        margin-left: 24px !important;
+        display: block;
+      }
       
       span {
         margin-left: 24px;
@@ -566,7 +574,7 @@ a {
 
 /* Track */
 ::-webkit-scrollbar-track { 
-  border-radius: 10px;
+  border-radius: 0px 0px 8px 0px;
   background: #f6f6f6;
 }
  

@@ -102,6 +102,14 @@ export default {
           skill: 'People',
           age: 24,
           description: 'Love you manman'
+        },
+        {
+          name: 'Jon Josko',
+          email: 'jonj@gmail.com',
+          company: 'Illinois Policy Institute',
+          skill: 'Data Science',
+          age: 24,
+          description: 'Mario main'
         }
       ],
       triggerUp: false,
@@ -121,11 +129,21 @@ export default {
 
   },
   mounted() {
-    this.setDateTime();
+    this.setDate();
   },
   methods: {
-    setDateTime() {
-      this.datetime = 'Current Date';
+    setDate() {
+      var today = new Date();
+      var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+
+      var lastOfDay = dd.substring(dd.length-1,dd.length);
+      var secondLastOfDay = dd.substring(dd.length-2,dd.length-1);
+      today = months[parseInt(mm) - 1] + ' ' + dd + ( lastOfDay == 1 && secondLastOfDay != 1 ? 'st' : ( lastOfDay == 2 && secondLastOfDay != 1 ? 'nd' : ( lastOfDay == 3 && secondLastOfDay != 1 ? 'rd' : 'th' ) ) ) + ', ' + yyyy;
+
+      this.datetime = today;
     },
     handleAdd() {
       alert('handling data add from parent...');
@@ -227,7 +245,9 @@ export default {
 
       <section class="section">
         <div class="page-container">
-          <Modal />
+          <Modal
+          :title="'Settings'" 
+          />
         </div>
       </section>
 

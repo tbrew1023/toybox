@@ -57,7 +57,10 @@
                             <p class="msg-content">{{ dbExport.filename }}</p>
                         </div>
                     </div>
-                    <a class="export" :href="dbExport.downloadUrl"><div class="reply-btn">Download</div></a>
+                    <div class="export-buttons-container">
+                        <a class="export" :href="dbExport.downloadUrl"><div class="download-btn">Download</div></a>
+                        <!--div class="remove-btn">Remove</div-->
+                    </div>
                 </li>
             </ul>
         </div>
@@ -199,21 +202,30 @@ export default {
                 margin-top: 0px;
                 margin-bottom: 0px;
             }
-
-            .reply-btn {
-                background: #4671B1;
-                padding: 6px 12px;
-                margin-right: 18px;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-                transition: 200ms;
-
-                &:hover {
-                    transform: scale(0.95);
-                }
-            }
         }
+    }
+}
+
+.export-buttons-container {
+    display: flex;
+}
+
+.remove-btn {
+    background: rgba(red, 0.2) !important;
+    color: red !important;
+}
+
+.reply-btn, .download-btn, .remove-btn {
+    background: #4671B1;
+    padding: 6px 12px;
+    margin-right: 18px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 200ms;
+
+    &:hover {
+        transform: scale(0.95);
     }
 }
 
@@ -274,7 +286,7 @@ export default {
 
 /* Track */
 ::-webkit-scrollbar-track { 
-  border-radius: 10px;
+  border-radius: 0px 0px 8px 0px;
   background: #ffffff;
 }
  

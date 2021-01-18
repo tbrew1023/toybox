@@ -219,7 +219,8 @@ export default {
           <DataList 
           :title="'Students'" 
           :test="true" 
-          :expandable="true" 
+          :expandable="true"
+          :graphable="true"
           :data="items" 
           :columnTitles="['NAME','EMAIL','COMPANY','SKILL','AGE']"
           :columnKeys="['name','email','company','skill', 'age']"

@@ -1,8 +1,11 @@
 <script>
-//import firebase from 'firebase';
+import ProgressBar from '@/components/ProgressBar.vue';
 
 export default {
   name: 'DataList',
+  components: {
+    ProgressBar
+  },
   props: {
     title: {
       type: String,
@@ -18,7 +21,8 @@ export default {
     },
     data: Array,
     columnTitles: Array,
-    columnKeys: Array
+    columnKeys: Array,
+    graphable: Boolean
   },
   data() {
     return {
@@ -125,6 +129,7 @@ export default {
                 <div class="pre-key-col"><span>{{ index1+1 }}</span></div>
                 <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col">
                   <span>{{ filteredItems[index1][colKey] }}</span>
+                  <ProgressBar v-if="graphable && index2 == columnKeys.length - 1" :value="filteredItems[index1].age" />
                 </div>
               </div>
               <div class="droppable">

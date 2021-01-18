@@ -101,7 +101,7 @@ export default {
           <div class="search-icon"></div>
         </div>
         <div class="filter-button"><div class="order-icon"></div>Search Options</div>
-        <div @click="handleExport" class="export-button"><div class="export-icon"></div>Export</div>
+        <div @click="exportDB('students')" class="export-button"><div class="export-icon"></div>Export</div>
       </div>
     </div>
 

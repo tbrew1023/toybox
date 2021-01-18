@@ -3,6 +3,7 @@ import CircleProgress from '@/components/CircleProgress.vue'
 import DataList from '@/components/DataList.vue'
 import Banner from '@/components/Banner.vue'
 import Modal from '@/components/Modal.vue'
+import firebase from 'firebase'
 
 export default {
   name: 'Home',
@@ -15,7 +16,7 @@ export default {
   data() {
     return {
       options: {
-        normalScrollElements: '.datalist-container',
+        normalScrollElements: '.datalist-container, .modal-content-container',
         scrollingSpeed: 600,
         navigation: true,
         fadingEffect: true,
@@ -112,6 +113,7 @@ export default {
           description: 'Mario main'
         }
       ],
+      items: [],
       triggerUp: false,
       triggerDown: false,
       fix: false,
@@ -130,13 +132,15 @@ export default {
   },
   mounted() {
     this.setDate();
+    this.fetchData();
+    console.log(this.items);
   },
   methods: {
     setDate() {
       var today = new Date();
       var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
       var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var mm = String(today.getMonth() + 1).padStart(2, '0');
       var yyyy = today.getFullYear();
 
       var lastOfDay = dd.substring(dd.length-1,dd.length);
@@ -151,14 +155,13 @@ export default {
     handleExport() {
       alert('handling data export from parent...');
     },
-    /*async fetchData() {
-      await firebase.firestore().collection('menu').orderBy('name').get().then((docs) => {
+    async fetchData() {
+      await firebase.firestore().collection('testData').orderBy('name').get().then((docs) => {
         docs.forEach((doc) => {
           this.items.push(doc.data());
-          this.droppable.push(false);
         });
       });
-    },*/
+    },
     handleLeave(origin, destination, direction) {
       console.log('origin: ', origin);
       console.log('destination: ', destination);
@@ -217,7 +220,7 @@ export default {
           :title="'Students'" 
           :test="true" 
           :expandable="true" 
-          :data="testData" 
+          :data="items" 
           :columnTitles="['NAME','EMAIL','COMPANY','SKILL','AGE']"
           :columnKeys="['name','email','company','skill', 'age']"
           @addToList="handleAdd()"
@@ -246,7 +249,7 @@ export default {
       <section class="section">
         <div class="page-container">
           <Modal
-          :title="'Settings'" 
+          :title="'Exports'" 
           />
         </div>
       </section>

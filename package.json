@@ -13,7 +13,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "firebase": "^7.15.1",
+    "firebase": "^7.24.0",
+    "json2csv": "^5.0.5",
     "moment-timezone": "^0.5.31",
     "vue": "^2.6.11",
     "vue-fullpage.js": "^0.1.5",

@@ -168,6 +168,17 @@ Vue.mixin({
           });
         });
       });
+    },
+    updateStudent(student, newData) {
+      console.log('updating student');
+      firebase.firestore().collection('testData').where('email','==',student).get().then((docs) => {
+        docs.forEach((doc) => {
+          doc.ref.update({
+            scores: firebase.firestore.FieldValue.arrayUnion(newData) 
+          });
+        });
+        
+      });
     }
   },
 })

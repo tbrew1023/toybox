@@ -34,7 +34,8 @@ export default {
       lastDropped: null,
       dropActive: false,
       currentStudent: null,
-      searchFilter: 'name'
+      searchFilter: 'name',
+      newScore: null
     }
   },
   mounted() {
@@ -161,8 +162,8 @@ export default {
                 <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
                 <div class="bottom-droppable">
                   <div class="droppable-actions-container">
-                    <div v-if="dropActive" class="drop-btn1"><input type="number" placeholder="Add Data" /></div>
-                    <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Submit</div>
+                    <div v-if="dropActive" class="drop-btn1"><input v-model="newScore" type="number" placeholder="Add Data" /></div>
+                    <div v-if="dropActive" @click="updateStudent(currentStudent, newScore)" class="droppable-btn drop-btn2">Submit</div>
                   </div>
                   <div v-if="dropActive" @click="removeStudent(currentStudent)" class="remove-student-btn">Remove Student</div>
                 </div>

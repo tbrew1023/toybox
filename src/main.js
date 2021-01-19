@@ -109,18 +109,39 @@ Vue.mixin({
                   });
                   store.commit('exportComplete');
                   store.commit('exportURL', downloadURL);
-                  alert('SUCCESS! File available at ' + downloadURL);
-                  App.$forceUpdate();
+                  store.commit('pushNotification', { 
+                    context: 'Export Status', 
+                    message: 'Database was successfully exported!',
+                    background: 'rgba(#DDE4ED,0.1)', 
+                    actionName: 'View Exports', 
+                    action: () => {
+                      console.log('routing to exports page...');
+                      router.push('/exports');
+                    }
+                  });
                 }
               )
             })
             
           } catch (err) {
             console.error(err);
+              store.commit('pushNotification', { 
+                context: 'Export Status', 
+                message: 'Database failed to export :(',
+                background: 'rgba(255,0,0,0.1)',
+                actionName: 'Try Again', 
+                action: () => {
+                  console.log('routing to exports page...');
+                  router.push('/exports');
+                }
+              });
           }
 
       });
     },
+    addStudent() {
+      
+    }
   },
 })
 

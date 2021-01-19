@@ -5,10 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    modalContext: 'Exports',
+    modalContext: 'Notifications',
     timezone: 'UTC',
     exporting: false,
-    exportComplete: false
+    exportComplete: false,
+    notifications: []
   },
   mutations: {
     updateModal: (state, context) => { state.modalContext = context },
@@ -16,6 +17,8 @@ export default new Vuex.Store({
     exportURL: (state, downloadURL) => { state.downloadURL = downloadURL },
     exportComplete: (state) => { state.exportComplete = true },
     exporting: state => { state.exporting = true },
+    pushNotification: (state, notificationContext) => { state.notifications.push(notificationContext) },
+    removeNotification: ( state, notificationIndex ) => { state.notifications.splice(notificationIndex, 1) }
   },
   actions: {
   },

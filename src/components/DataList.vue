@@ -90,6 +90,9 @@ export default {
     preventCollapse(e) {
       console.log('oboy');
       console.log('preventing collapse for ', e);
+    },
+    handleRemoveStudent() {
+      console.log('removing student');
     }
   }
 }
@@ -135,8 +138,11 @@ export default {
               <div class="droppable">
                 <strong style="font-weight: normal; font-size: 14px; margin-left: 12px">{{ filteredItems[index1].description }}</strong>
                 <div class="bottom-droppable">
-                  <div v-if="dropActive" class="drop-btn1"><input type="number" placeholder="Add Data" /></div>
-                  <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Submit</div>
+                  <div class="droppable-actions-container">
+                    <div v-if="dropActive" class="drop-btn1"><input type="number" placeholder="Add Data" /></div>
+                    <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Submit</div>
+                  </div>
+                  <div v-if="dropActive" @click="handleRemoveStudent" class="remove-student-btn">Remove Student</div>
                 </div>
               </div>
             </li>
@@ -149,6 +155,30 @@ export default {
 
 <style scoped lang="scss">
 
+.droppable-actions-container {
+  display: flex;
+  margin-left: 18px;
+}
+
+.remove-student-btn {
+  background: rgba(red, 0.1);
+  color: red;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-right: 18px;
+  animation: flyin 200ms ease forwards 300ms;
+  cursor: pointer;
+  transition: 200ms !important;
+  opacity: 0;
+  transform: scale(0.6);
+  pointer-events: all;
+
+  &:hover {
+    background: rgba(red, 0.5);
+    color: white;
+  }
+}
+
 .drop-btn1 {
   opacity: 0;
   transform: scale(0.6);
@@ -156,10 +186,10 @@ export default {
   margin-right: 12px;
 
   input {
-    padding: 8px 0px 8px 12px;
+    padding: 8px 8px 8px 12px;
     border: none;
     border-radius: 8px;
-    width: 100px;
+    width: 200px;
 
     &:focus {
       outline: none;
@@ -458,11 +488,14 @@ a {
         //display: none !important;
         //background: red;
         height: 100%;
-        width: max-content;
+        width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        margin-left: 24px;
+
+        .remove-student-btn {
+          display: none;
+        }
 
         .droppable-btn {
           background: #4671B1;
@@ -493,6 +526,14 @@ a {
       padding-top: 12px;
       pointer-events: all;
       display: flex;
+
+      .remove-student-btn {
+        display: block !important;
+
+        &:hover {
+          transform: scale(0.95);
+        }
+      }
 
       strong {
         margin-top: 6px;

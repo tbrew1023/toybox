@@ -34,21 +34,42 @@
         </div>
         <div v-if="modalContext == 'Notifications'" class="modal-content-container">
             <ul>
-                <li class="notification-item">
+                <li class="no-exports" v-if="notifications.length == 0">No Notifications</li>
+                <li v-for="(notification, index) in notifications" :key="index" class="notification-item" :style="'background:'+notification.background">
                     <div class="msg-container">
-                        <div class="notification-photo"></div>
                         <div class="msg-content-container">
-                            <p class="msg-from">Student Score Added</p>
-                            <p class="msg-content">You successfully added score of 'score' for 'student'</p>
+                            <p class="msg-from">{{ notification.context }}</p>
+                            <p class="msg-content">{{ notification.message }}</p>
                         </div>
                     </div>
-                    <div @click="handleMsgReply()" class="reply-btn">Dismiss</div>
+                    <div class="export-buttons-container">
+                        <div @click="notification.action" class="notification-action">{{ notification.actionName }}</div>
+                        <div @click="handleDismiss(index)" class="notification-action remove-btn">Dismiss</div>
+                    </div>
                 </li>
             </ul>
         </div>
         <div v-if="modalContext == 'Exports'" class="modal-content-container">
             <ul>
-                <li class="no-exports" v-if="dbExports.length == 0">No exports</li>
+                <li class="no-exports" v-if="dbExports.length == 0">No Exports</li>
+                <li v-for="(dbExport, index) in dbExports" :key="index" class="notification-item" :class="(index == 0 ? 'latest' : '' )">
+                    <div class="msg-container">
+                        <div class="notification-photo"></div>
+                        <div class="msg-content-container">
+                            <p class="msg-from">Created on {{ dbExport.dateCreated }}</p>
+                            <p class="msg-content">{{ dbExport.filename }}</p>
+                        </div>
+                    </div>
+                    <div class="export-buttons-container">
+                        <a class="export" :href="dbExport.downloadUrl"><div class="download-btn">Download</div></a>
+                        <!--div class="remove-btn">Remove</div-->
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div v-if="modalContext == 'Add'" class="modal-content-container">
+            <ul>
+                <li class="no-exports" v-if="dbExports.length == 0">No Exports</li>
                 <li v-for="(dbExport, index) in dbExports" :key="index" class="notification-item" :class="(index == 0 ? 'latest' : '' )">
                     <div class="msg-container">
                         <div class="notification-photo"></div>
@@ -91,6 +112,9 @@ export default {
     computed: {
         modalContext() {
             return store.state.modalContext;
+        },
+        notifications() {
+            return store.state.notifications;
         }
     },
     methods: {
@@ -103,6 +127,9 @@ export default {
         },
         handleMsgReply() {  
             alert('Handle message reply...');
+        },
+        handleDismiss(index) {
+            store.commit('removeNotification', index);
         },
         fetchExports() {
             firebase.firestore().collection('exports').orderBy('timestamp').get().then((docs) => {
@@ -127,7 +154,7 @@ export default {
 
 .latest {
     background: #DDE4ED;
-    animation: flash 1s ease forwards 300ms;
+    animation: flash 2s ease forwards 300ms;
 }
 
 .no-exports {
@@ -179,6 +206,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: flash 2s ease forwards;
             //cursor: pointer;
 
             .sender-photo {
@@ -215,7 +243,7 @@ export default {
     color: red !important;
 }
 
-.reply-btn, .download-btn, .remove-btn {
+.reply-btn, .download-btn, .remove-btn, .notification-action {
     background: #4671B1;
     padding: 6px 12px;
     margin-right: 18px;

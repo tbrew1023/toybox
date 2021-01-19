@@ -21,9 +21,9 @@ export default {
         navigation: true,
         fadingEffect: true,
         navigationPosition: 'left',
-        navigationTooltips: ['CircleProgress.vue','DataList.vue', 'TopNav.vue', 'Banner.vue','Modal.vue'],
+        navigationTooltips: ['CircleProgress.vue','DataList.vue', 'Banner.vue','Modal.vue'],
         showActiveTooltip: true,
-        anchors: ['circleprogress','datalist', 'topnav', 'banner','modal'],
+        anchors: ['circleprogress','datalist', 'banner','modal'],
         onLeave: (origin, destination, direction) => {
           this.handleLeave(origin, destination, direction);
         },
@@ -121,7 +121,7 @@ export default {
       activeSlide: 1,
       scrollOverflow: false,
       context: 0,
-      datetime: null
+      datetime: null,
     }
   },
   props: {
@@ -134,6 +134,9 @@ export default {
     this.setDate();
     this.fetchData();
     console.log(this.items);
+  },
+  computed: {
+    
   },
   methods: {
     setDate() {
@@ -231,12 +234,6 @@ export default {
       </section>
 
       <section class="section">
-        <div class="page-container">
-          top navbar
-        </div>
-      </section>
-
-      <section class="section">
           <div class="page-container">
             <Banner 
             :title="'Welcome!'"
@@ -250,7 +247,7 @@ export default {
       <section class="section">
         <div class="page-container">
           <Modal
-          :title="'Exports'" 
+          :title="'Notifications'"
           />
         </div>
       </section>

@@ -21,7 +21,7 @@ export default {
         navigation: true,
         fadingEffect: true,
         navigationPosition: 'left',
-        navigationTooltips: ['CircleProgress.vue','DataList.vue', 'Banner.vue','Modal.vue'],
+        navigationTooltips: ['CircleProgress.vue','DataList.vue','Modal.vue', 'Banner.vue'],
         showActiveTooltip: true,
         anchors: ['circleprogress','datalist', 'banner','modal'],
         onLeave: (origin, destination, direction) => {
@@ -234,6 +234,12 @@ export default {
       </section>
 
       <section class="section">
+        <div class="page-container">
+          <Modal />
+        </div>
+      </section>
+
+      <section class="section">
           <div class="page-container">
             <Banner 
             :title="'Welcome!'"
@@ -242,14 +248,6 @@ export default {
             :primaryColor="'#4671B1'"
             />
           </div>        
-      </section>
-
-      <section class="section">
-        <div class="page-container">
-          <Modal
-          :title="'Notifications'"
-          />
-        </div>
       </section>
 
     </full-page>

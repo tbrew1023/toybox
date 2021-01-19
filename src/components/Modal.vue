@@ -1,6 +1,73 @@
+<script>
+import store from '../store';
+import firebase from 'firebase';
+
+export default {
+    name: 'Modal',
+    data() {
+        return {
+            dbExports: [],
+            newStudent: {
+                name: null,
+                email: null,
+                company: null,
+                skill: null,
+                age: null,
+                scores: ['']
+            }
+        }
+    },
+    props: {
+        title: {
+            type: String,
+            default: 'Modal Title'
+        }
+    },
+    mounted() {
+        this.fetchExports();
+    },
+    computed: {
+        modalContext() {
+            return store.state.modalContext;
+        },
+        notifications() {
+            return store.state.notifications.reverse();
+        }
+    },
+    methods: {
+        handleModalExit() {
+            console.log('exiting modal...');
+        },
+        handleTimezoneChange(e) {
+            console.log('changing timezone to ' + e.target.value);
+            store.commit('updateTimezone', e.target.value);
+        },
+        handleMsgReply() {  
+            alert('Handle message reply...');
+        },
+        handleDismiss(index) {
+            store.commit('removeNotification', index);
+        },
+        fetchExports() {
+            firebase.firestore().collection('exports').orderBy('timestamp').get().then((docs) => {
+                docs.forEach((doc) => {
+                    this.dbExports.push(doc.data());
+                })
+                this.dbExports.reverse();
+            }).catch(() => {
+                    console.error('No exports to display');
+            });
+        },
+        allocateScore() {
+            this.newStudent.scores.push('');
+        },
+    }
+}
+</script>
+
 <template>
 <div class="modal-container">
-    <div class="modal-top"><h3>{{ title }}</h3><div @click="handleModalExit()" class="modal-exit">X</div></div>
+    <div class="modal-top"><h3>{{ modalContext }}</h3><div @click="handleModalExit()" class="modal-exit">X</div></div>
     <div class="modal-bottom">
         <div v-if="modalContext == 'Settings'" class="modal-content-container">
             <ul>
@@ -35,7 +102,7 @@
         <div v-if="modalContext == 'Notifications'" class="modal-content-container">
             <ul>
                 <li class="no-exports" v-if="notifications.length == 0">No Notifications</li>
-                <li v-for="(notification, index) in notifications" :key="index" class="notification-item" :style="'background:'+notification.background">
+                <li v-for="(notification, index) in notifications" :key="index" class="notification-item" :style="'background:'+notification.background" :class="(index == 0 ? 'latest' : '' )">
                     <div class="msg-container">
                         <div class="msg-content-container">
                             <p class="msg-from">{{ notification.context }}</p>
@@ -43,7 +110,7 @@
                         </div>
                     </div>
                     <div class="export-buttons-container">
-                        <div @click="notification.action" class="notification-action">{{ notification.actionName }}</div>
+                        <div v-if="notification.action" @click="notification.action.fn" class="notification-action">{{ notification.action.name }}</div>
                         <div @click="handleDismiss(index)" class="notification-action remove-btn">Dismiss</div>
                     </div>
                 </li>
@@ -67,86 +134,94 @@
                 </li>
             </ul>
         </div>
-        <div v-if="modalContext == 'Add'" class="modal-content-container">
-            <ul>
-                <li class="no-exports" v-if="dbExports.length == 0">No Exports</li>
-                <li v-for="(dbExport, index) in dbExports" :key="index" class="notification-item" :class="(index == 0 ? 'latest' : '' )">
-                    <div class="msg-container">
-                        <div class="notification-photo"></div>
-                        <div class="msg-content-container">
-                            <p class="msg-from">Created on {{ dbExport.dateCreated }}</p>
-                            <p class="msg-content">{{ dbExport.filename }}</p>
-                        </div>
-                    </div>
-                    <div class="export-buttons-container">
-                        <a class="export" :href="dbExport.downloadUrl"><div class="download-btn">Download</div></a>
-                        <!--div class="remove-btn">Remove</div-->
-                    </div>
-                </li>
-            </ul>
+        <div v-if="modalContext == 'Add Student'" class="modal-content-container">
+            <div class="add-student-container">
+                <input v-model="newStudent.name" type="text" placeholder="Name" />
+                <input v-model="newStudent.email" type="text" placeholder="Email" />
+                <input v-model="newStudent.company" type="text" placeholder="Company" />
+                <input v-model="newStudent.skill" type="text" placeholder="Skill" />
+                <input v-model="newStudent.age" type="number" placeholder="Age" />
+                <div class="scores-input-container">
+                    <input class="score-input" v-for="(score, index) in newStudent.scores" :key="index" v-model="newStudent.scores[index]" type="number" :placeholder="'score '+index" />
+                    <div @click="allocateScore" class="add-score">+</div>
+                </div>
+                <div @click="addStudent(newStudent)" class="new-student-add">Add Student</div>
+            </div>
         </div>
     </div>
 </div>
 </template>
 
-<script>
-import store from '../store';
-import firebase from 'firebase';
-
-export default {
-    name: 'Modal',
-    data() {
-        return {
-            dbExports: []
-        }
-    },
-    props: {
-        title: {
-            type: String,
-            default: 'Modal Title'
-        }
-    },
-    mounted() {
-        this.fetchExports();
-    },
-    computed: {
-        modalContext() {
-            return store.state.modalContext;
-        },
-        notifications() {
-            return store.state.notifications;
-        }
-    },
-    methods: {
-        handleModalExit() {
-            console.log('exiting modal...');
-        },
-        handleTimezoneChange(e) {
-            console.log('changing timezone to ' + e.target.value);
-            store.commit('updateTimezone', e.target.value);
-        },
-        handleMsgReply() {  
-            alert('Handle message reply...');
-        },
-        handleDismiss(index) {
-            store.commit('removeNotification', index);
-        },
-        fetchExports() {
-            firebase.firestore().collection('exports').orderBy('timestamp').get().then((docs) => {
-                docs.forEach((doc) => {
-                    this.dbExports.push(doc.data());
-                })
-            }).catch(() => {
-                    console.error('No exports to display');
-            });
-        }
-    }
-}
-</script>
-
 <style lang="scss" scoped>
 
+.new-student-add {
+    background: #4671B1;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-top: 24px;
+    cursor: pointer;
+    transition: 200ms;
+
+    &:hover {
+        background: rgba(#4671B1, 0.1);
+        color: #4671B1;
+    }
+}
+
+.score-input {
+    width: 50px;
+    margin-left: 12px;
+    padding-right: 6px !important;
+    padding-left: 12px !important;
+}
+
+.add-student-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    input {
+        border: none;
+        background: #f6f6f6;
+        margin-top: 24px;
+        padding: 12px 24px;
+        border-radius: 8px;
+    }
+}
+
+.scores-input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-score {
+    background: rgba(#4671B1, 0.1);
+    color: #4671B1;
+    width: 24px;
+    height: 24px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    margin-left: 12px;
+    cursor: pointer;
+    transition: 200ms;
+
+    &:hover {
+        background: #4671B1;
+        color: white;
+    }
+}
+
 @keyframes flash {
+    from {
+        background: #e0e0e0;
+    }
     to {
         background: transparent;
     }
@@ -154,7 +229,7 @@ export default {
 
 .latest {
     background: #DDE4ED;
-    animation: flash 2s ease forwards 300ms;
+    animation: flash 2s ease forwards;
 }
 
 .no-exports {
@@ -206,7 +281,7 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: flash 2s ease forwards;
+            //animation: flash 2s ease forwards;
             //cursor: pointer;
 
             .sender-photo {
@@ -239,8 +314,8 @@ export default {
 }
 
 .remove-btn {
-    background: rgba(red, 0.2) !important;
-    color: red !important;
+    background: #DDE4ED !important;
+    color: #4671B1 !important;
 }
 
 .reply-btn, .download-btn, .remove-btn, .notification-action {
@@ -260,7 +335,7 @@ export default {
 .modal-container {
     background: white;
     height: 500px;
-    width: 700px;
+    width: 900px;
     border-radius: 8px;
     box-shadow: 0px 12px 24px 24px rgba(0,0,0,0.01);
 

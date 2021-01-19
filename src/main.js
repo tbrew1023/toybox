@@ -113,12 +113,15 @@ Vue.mixin({
                     context: 'Export Status', 
                     message: 'Database was successfully exported!',
                     background: 'rgba(#DDE4ED,0.1)', 
-                    actionName: 'View Exports', 
-                    action: () => {
-                      console.log('routing to exports page...');
-                      router.push('/exports');
+                    action: {
+                      name: 'View Exports',
+                      fn: () => {
+                        console.log('routing to exports page...');
+                        store.commit('modalContext', 'Exports');
+                      }
                     }
                   });
+                  store.commit('modalContext', 'Notifications');
                 }
               )
             })
@@ -129,18 +132,42 @@ Vue.mixin({
                 context: 'Export Status', 
                 message: 'Database failed to export :(',
                 background: 'rgba(255,0,0,0.1)',
-                actionName: 'Try Again', 
-                action: () => {
-                  console.log('routing to exports page...');
-                  router.push('/exports');
-                }
               });
+              store.commit('modalContext', 'Notifications');
           }
 
       });
     },
-    addStudent() {
-      
+    addStudent(newStudent) {
+      firebase.firestore().collection('testData').add(newStudent).then(() => {
+        store.commit('pushNotification', {
+          context: 'Student Add',
+          message: 'Successfully added ' + newStudent.name + ' to database!',
+          background: 'rgba(0,255,0,0.1)',
+          action: {
+            name: 'View',
+            fn: () => {
+              console.log('back to dashboard');
+            }
+          }
+        });
+        console.log('added new student successfully');
+        store.commit('modalContext', 'Notifications');
+      });
+    },
+    removeStudent(student) {
+      firebase.firestore().collection('testData').where('email', '==', student).get().then((docs) => {
+        docs.forEach((doc) => {
+          doc.ref.delete().then(() => {
+            alert(student + ' was removed from the database');
+            store.commit('pushNotification', {
+              context: 'Student Removal',
+              message: 'Successfully deleted ' + student + ' from database',
+              backgorund: 'rgba(0,255,0,0.1)',
+            });
+          });
+        });
+      });
     }
   },
 })

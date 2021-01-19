@@ -1,5 +1,6 @@
 <script>
 import ProgressBar from '@/components/ProgressBar.vue';
+import store from '../store';
 
 export default {
   name: 'DataList',
@@ -31,7 +32,9 @@ export default {
       search: '',
       activeDrop: null,
       lastDropped: null,
-      dropActive: false
+      dropActive: false,
+      currentStudent: null,
+      searchFilter: 'name'
     }
   },
   mounted() {
@@ -40,19 +43,26 @@ export default {
   computed: {
     filteredItems() {
       return this.data.filter((item) => {
-        return item.name.toLowerCase().match(this.search.toLowerCase()); //when search matches description, expand that item
+        return item[this.searchFilter].toLowerCase().match(this.search.toLowerCase()); //when search matches description, expand that item
       });
-    }
+    },
+    /*currentStudent() {
+      return
+    }*/
   },
   methods: {
     handleAdd() {
-      this.$emit('addToList');
+      //this.$emit('addToList');
+      store.commit('modalContext', 'Add Student');
     },
     handleExport() {
       this.$emit('exportList');
     },
     dropdown(event) {
-      console.clear();
+      //console.clear();
+
+      this.currentStudent = event.currentTarget.childNodes[2].childNodes[0].innerHTML;
+      console.log('current student: ', this.currentStudent);
 
       /*
       
@@ -91,8 +101,10 @@ export default {
       console.log('oboy');
       console.log('preventing collapse for ', e);
     },
-    handleRemoveStudent() {
-      console.log('removing student');
+    updateSearchFilter(e) {
+      console.log('updating search filter');
+      console.log(e.target.value);
+      this.searchFilter = e.target.value;
     }
   }
 }
@@ -104,10 +116,20 @@ export default {
       <div class="head-left"><h1>{{ title }}</h1><div class="add-button" @click="handleAdd"><div class="add-icon"></div>Add</div></div>
       <div class="head-right">
         <div class="search-container">
-          <input @click="collapseLast" v-model="search"  placeholder="Search by name" type="text" name="search" id="search"/>
+          <input @click="collapseLast" v-model="search"  placeholder="Search" type="text" name="search" id="search"/>
           <div class="search-icon"></div>
         </div>
-        <div class="filter-button"><div class="order-icon"></div>Search Options</div>
+        <div class="filter-button">
+          <div class="order-icon"></div>
+          <select class="filter-button" @change="updateSearchFilter" name="search-filter" id="search-filter">
+              <option value="name">Search by name</option>
+              <option value="email">Search by email</option>
+              <option value="company">Search by company</option>
+              <option value="skill">Search by skill</option>
+              <option value="age">Search by age</option>
+              <option value="score">Search by score</option>
+            </select>
+        </div>
         <div @click="exportDB('students')" class="export-button"><div class="export-icon"></div>Export</div>
       </div>
     </div>
@@ -132,7 +154,7 @@ export default {
                 <div class="pre-key-col"><span>{{ index1+1 }}</span></div>
                 <div v-for="(colKey, index2) in columnKeys" :key="index2" class="key-col">
                   <span>{{ filteredItems[index1][colKey] }}</span>
-                  <ProgressBar v-if="graphable && index2 == columnKeys.length - 1" :value="filteredItems[index1].age" />
+                  <ProgressBar v-if="graphable && index2 == columnKeys.length - 1" :value="parseInt(filteredItems[index1].age)" />
                 </div>
               </div>
               <div class="droppable">
@@ -142,7 +164,7 @@ export default {
                     <div v-if="dropActive" class="drop-btn1"><input type="number" placeholder="Add Data" /></div>
                     <div v-if="dropActive" @click="handleDroppableBtnClick()" class="droppable-btn drop-btn2">Submit</div>
                   </div>
-                  <div v-if="dropActive" @click="handleRemoveStudent" class="remove-student-btn">Remove Student</div>
+                  <div v-if="dropActive" @click="removeStudent(currentStudent)" class="remove-student-btn">Remove Student</div>
                 </div>
               </div>
             </li>
@@ -281,7 +303,7 @@ export default {
   color: black;
 
   span {
-    margin-left: 24px;
+    margin-left: 32px;
     font-size: 12px;
     opacity: 1;
   }
@@ -296,7 +318,7 @@ export default {
   align-items: center;
 
   span {
-    margin-left: 24px;
+    margin-left: 32px;
     font-size: 12px;
     text-transform: uppercase;
     opacity: 0.4;
@@ -374,6 +396,14 @@ export default {
   margin-right: 0px !important;
 }
 
+.filter-button {
+  transform: scale(1) !important;
+  width: max-content !important;
+  outline-style: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
 .filter-button, .export-button, .add-button {
   font-weight: bold;
   background: white;
@@ -409,7 +439,8 @@ export default {
     background-repeat: no-repeat;
     width: 18px;
     height: 18px;
-    margin-right: 6px;
+    margin-right: -12px;
+    margin-left: 12px;
   }
 
   &:hover {

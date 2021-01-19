@@ -18,7 +18,8 @@ export default new Vuex.Store({
     exportComplete: (state) => { state.exportComplete = true },
     exporting: state => { state.exporting = true },
     pushNotification: (state, notificationContext) => { state.notifications.push(notificationContext) },
-    removeNotification: ( state, notificationIndex ) => { state.notifications.splice(notificationIndex, 1) }
+    removeNotification: ( state, notificationIndex ) => { state.notifications.splice(notificationIndex, 1) },
+    modalContext: (state, context) => { state.modalContext = context }
   },
   actions: {
   },

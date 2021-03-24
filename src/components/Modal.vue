@@ -137,7 +137,7 @@ export default {
         <div v-if="modalContext == 'Add Student'" class="modal-content-container">
             <div class="add-student-container">
                 <input v-model="newStudent.name" type="text" placeholder="Name" />
-                <input v-model="newStudent.email" type="text" placeholder="Email" />
+                <input v-model="newStudent.email" type="email" placeholder="Email" />
                 <input v-model="newStudent.company" type="text" placeholder="Company" />
                 <input v-model="newStudent.skill" type="text" placeholder="Skill" />
                 <input v-model="newStudent.age" type="number" placeholder="Age" />
@@ -145,7 +145,7 @@ export default {
                     <input class="score-input" v-for="(score, index) in newStudent.scores" :key="index" v-model="newStudent.scores[index]" type="number" :placeholder="'score '+index" />
                     <div @click="allocateScore" class="add-score">+</div>
                 </div>
-                <div @click="addStudent(newStudent)" class="new-student-add">Add Student</div>
+                <div :class="( !newStudent.name || !newStudent.email || !newStudent.company || !newStudent.skill ? 'disabled' : '' )" @click="addStudent(newStudent)" class="new-student-add">Add Student</div>
             </div>
         </div>
     </div>
@@ -153,6 +153,12 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+.disabled {
+    opacity: 0.2;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
 
 .new-student-add {
     background: #4671B1;

@@ -177,7 +177,11 @@ Vue.mixin({
             scores: firebase.firestore.FieldValue.arrayUnion(newData) 
           });
         });
-        
+        store.commit('pushNotification', {
+          context: 'Student Update',
+          message: 'Successfully added score of ' + newData + ' to ' + student,
+          backgorund: 'rgba(0,255,0,0.1)',
+        });
       });
     }
   },

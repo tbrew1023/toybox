@@ -39,6 +39,8 @@ export default {
       //this.waveOffset = 700;
       console.log('unveiled');
     }, 3000);*/
+    console.clear();
+    console.log('App mounted');
   },
   methods: {
     handleNav(index) {

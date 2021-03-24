@@ -3,6 +3,9 @@ import CircleProgress from '@/components/CircleProgress.vue'
 import DataList from '@/components/DataList.vue'
 import Banner from '@/components/Banner.vue'
 import Modal from '@/components/Modal.vue'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
+
 import firebase from 'firebase'
 
 export default {
@@ -11,7 +14,8 @@ export default {
     CircleProgress,
     DataList,
     Banner,
-    Modal
+    Modal,
+    VueSlider
   },
   data() {
     return {
@@ -21,9 +25,9 @@ export default {
         navigation: true,
         fadingEffect: true,
         navigationPosition: 'left',
-        navigationTooltips: ['CircleProgress.vue','DataList.vue','Modal.vue', 'Banner.vue'],
+        navigationTooltips: ['CircleProgress.vue','DataList.vue','Modal.vue', 'Banner.vue', 'Slider.vue'],
         showActiveTooltip: true,
-        anchors: ['circleprogress','datalist', 'banner','modal'],
+        anchors: ['circleprogress','datalist', 'modal','banner', 'slider'],
         onLeave: (origin, destination, direction) => {
           this.handleLeave(origin, destination, direction);
         },
@@ -122,6 +126,7 @@ export default {
       scrollOverflow: false,
       context: 0,
       datetime: null,
+      value: 0
     }
   },
   props: {
@@ -250,12 +255,40 @@ export default {
           </div>        
       </section>
 
+      <!--section class="section">
+          <div class="page-container">
+            <div class="barchart-container"><BarChart /></div>
+          </div>        
+      </section>
+
+      <section class="section">
+          <div class="page-container">
+            <div class="barchart-container">
+              <Vid />
+            </div>
+          </div>        
+      </section-->
+
+      <section class="section">
+        <div class="page-container">
+          <vue-slider id="vue-slider" v-model="value" />
+        </div>
+      </section>
+
     </full-page>
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import '../assets/styles/global';
+
+.vue-slider {
+  width: 400px !important;
+}
+
+.barchart-container {
+  width: 700px;
+}
 
 .backdrop-container {
   background: #eee;

@@ -163,7 +163,7 @@ export default {
                 <div class="bottom-droppable">
                   <div class="droppable-actions-container">
                     <div v-if="dropActive" class="drop-btn1"><input v-model="newScore" type="number" placeholder="Add Data" /></div>
-                    <div v-if="dropActive" @click="updateStudent(currentStudent, newScore)" class="droppable-btn drop-btn2">Submit</div>
+                    <div v-if="dropActive" @click="updateStudent(currentStudent, newScore)" :class="( !newScore ? 'disabled' : '' )" class="droppable-btn drop-btn2">Submit</div>
                   </div>
                   <div v-if="dropActive" @click="removeStudent(currentStudent)" class="remove-student-btn">Remove Student</div>
                 </div>
@@ -177,6 +177,13 @@ export default {
 </template>
 
 <style scoped lang="scss">
+
+.disabled {
+    background: rgba(black,0.1) !important;
+    color: rgba(black, 0.2) !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+}
 
 .droppable-actions-container {
   display: flex;

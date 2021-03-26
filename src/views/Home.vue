@@ -3,8 +3,6 @@ import CircleProgress from '@/components/CircleProgress.vue'
 import DataList from '@/components/DataList.vue'
 import Banner from '@/components/Banner.vue'
 import Modal from '@/components/Modal.vue'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
 
 import firebase from 'firebase'
 
@@ -14,8 +12,7 @@ export default {
     CircleProgress,
     DataList,
     Banner,
-    Modal,
-    VueSlider
+    Modal
   },
   data() {
     return {
@@ -25,7 +22,7 @@ export default {
         navigation: true,
         fadingEffect: true,
         navigationPosition: 'left',
-        navigationTooltips: ['CircleProgress.vue','DataList.vue','Modal.vue', 'Banner.vue', 'Slider.vue'],
+        navigationTooltips: ['CircleProgress.vue','DataList.vue','Modal.vue', 'Banner.vue'],
         showActiveTooltip: true,
         anchors: ['circleprogress','datalist', 'modal','banner', 'slider'],
         onLeave: (origin, destination, direction) => {
@@ -269,11 +266,12 @@ export default {
           </div>        
       </section-->
 
-      <section class="section">
+      <!--section class="section">
         <div class="page-container">
           <vue-slider id="vue-slider" v-model="value" />
+          <p>Slider</p>
         </div>
-      </section>
+      </section-->
 
     </full-page>
   </div>
